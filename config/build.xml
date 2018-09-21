@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name= "BuildTest" basedir= "." default= "main">
+
+  <target name="main" depends= "clean,prepare,phpcs,phpmd,phpcpd"></target>
+
+  <!-- 既存フォルダ削除する処理　-->
+  <target name="clean" description="clean">
+    <delete dir="${logdir}" />
+    <delete dir="${datadir}/phpdoc" />
+    <delete dir="reports" includeemptydirs="true" />
+  </target>
+
+  <!-- レポートなどを格納するフォルダ作成する処理-->
+  <target name="prepare" description="prepare">
+    <mkdir dir="${logdir}" />
+    <mkdir dir="${datadir}/phpdoc" />
+     <mkdir dir="reports" />
+  </target>
+
+  <!-- phpcs -->
+  <target name="phpcs">
+    <exec executable= "/var/lib/jenkins/vendor/bin/phpcs" output= "reports/phpcs.xml">
+      <arg line= "--report=checkstyle /var/www/html/php_training/cake_app/src"/>
+    </exec>
+  </target>
+
+  <!-- phpmd -->
+  <target name="phpmd">
+    <phpmd rulesets= "cleancode,codesize,controversial,design,naming,unusedcode">
+      <fileset dir= "/var/www/html/php_training/cake_app/src/">
+        <include name= "**/*.php" />
+        <exclude name= "**/*Test.php" />
+      </fileset>
+      <formatter type= "xml" outfile= "reports/phpmd.xml" />
+    </phpmd>
+  </target>
+
+  <!-- phpcpd -->
+  <target name="phpcpd">
+    <phpcpd>
+      <fileset dir= "/var/www/html/php_training/cake_app/src/">
+        <include name= "**/*.php" />
+        <exclude name= "**/*Test.php" />
+      </fileset>
+      <formatter type= "pmd" outfile= "reports/phpcpd.xml" />
+    </phpcpd>
+  </target>
+
+</project>

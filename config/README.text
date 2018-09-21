@@ -1,0 +1,8 @@
+jenkins
+sudo less /var/lib/jenkins/secrets/initialAdminPassword
+プラグインインストール phing/PMD/Checkstyle/DRY
+ビルド：
+	シェル /var/lib/jenkins/vendor/phing/phing/bin/phing -logger phing.listener.DefaultLogger
+	ビルド後の処理 reports/**.xml
+保存
+ビルド実行→ sudo mv /var/lib/jenkins/build.xml /var/lib/jenkins/workspace/ビルド名/build.xml
